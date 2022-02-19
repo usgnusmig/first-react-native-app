@@ -1,16 +1,32 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, SafeAreaView } from "react-native";
+import { useState } from "react";
+import { StyleSheet, SafeAreaView, FlatList } from "react-native";
 
 import Header from "./components/Header";
 import TodoItem from "./components/TodoItem";
 import TaskModal from "./components/TaskModal";
 
 export default function App() {
+  const [todos, setTodos] = useState([
+    { title: "일기쓰기", done: true },
+    { title: "공부하기", done: false },
+  ]);
   return (
     <SafeAreaView style={styles.container}>
       <Header />
-      <TodoItem title="리액트 네이티브 앱 만들기" done={true} />
-      <TodoItem title="리액트 네이트브 마스터하기" done={false} />
+      <FlatList
+        data={todos}
+        renderItem={({ item }) => {
+          return (
+            <TodoItem
+              title={item.title}
+              done={item.done}
+              keyExtractor={(_, index) => {
+                return `${index}`;
+              }}
+            />
+          );
+        }}
+      />
       <TaskModal isVisible={false} />
     </SafeAreaView>
   );
